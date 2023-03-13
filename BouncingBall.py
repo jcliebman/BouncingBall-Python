@@ -9,11 +9,17 @@ LEFT_EDGE = -400
 BOTTOM_EDGE = -400
 TOP_EDGE = 400
 
+RIGHT_EDGE2 = 175
+LEFT_EDGE2 = -175
+BOTTOM_EDGE2 = -175
+TOP_EDGE2 = 175
+
 GRAVITY = .1
 DAMPING = .8
 FRICTION = .02
 
 colorList=['chocolate','skyblue','yellow','brown','blue','red']
+useOGscreen=True
 
 #This function will update the location of the ball
 def moveBall():
@@ -38,36 +44,74 @@ def moveBall():
             exit()
 
     #Check for collisons and reverse the direction if so
-    if (x >= RIGHT_EDGE):
-        xVel *= -1
-        newColorSide=random.randint(2,5)
-        ball.color(colorList[newColorSide])
-        if xVel!=0:
-            ball.setx(x + xVel-5)
+    if useOGscreen==True:
+        if (x >= RIGHT_EDGE):
+            xVel *= -1
+            newColorSide=random.randint(2,5)
+            ball.color(colorList[newColorSide])
+            if xVel!=0:
+                ball.setx(x + xVel-5)
 
-    if (x <= LEFT_EDGE):
-        xVel *= -1
-        newColorSide=random.randint(2,5)
-        ball.color(colorList[newColorSide])
-        if xVel!=0:
-            ball.setx(x + xVel+5)
-   
-    if (y <= BOTTOM_EDGE+5):
-        yVel *= -1
-        newColorTopBottom=random.randint(0,2)
-        ball.color(colorList[newColorTopBottom])
-        yVel = yVel * DAMPING #damping effect
-        if yVel>2:
-            ball.sety(y + yVel+5)
-        else:
-            yVel=0
+        if (x <= LEFT_EDGE):
+            xVel *= -1
+            newColorSide=random.randint(2,5)
+            ball.color(colorList[newColorSide])
+            if xVel!=0:
+                ball.setx(x + xVel+5)
+       
+        if (y <= BOTTOM_EDGE+5):
+            yVel *= -1
+            newColorTopBottom=random.randint(0,2)
+            ball.color(colorList[newColorTopBottom])
+            yVel = yVel * DAMPING #damping effect
+            if yVel>2:
+                ball.sety(y + yVel+5)
+            else:
+                yVel=0
 
-    if (y >= TOP_EDGE):
-        yVel *= -1
-        newColorTopBottom=random.randint(0,2)
-        ball.color(colorList[newColorTopBottom])
-        ball.sety(y + yVel-5)
+        if (y >= TOP_EDGE):
+            yVel *= -1
+            newColorTopBottom=random.randint(0,2)
+            ball.color(colorList[newColorTopBottom])
+            ball.sety(y + yVel-5)
+    else:
+        if (x >= RIGHT_EDGE2):
+            xVel *= -1
+            newColorSide=random.randint(2,5)
+            ball.color(colorList[newColorSide])
+            if xVel!=0:
+                ball.setx(x + xVel-5)
 
+        if (x <= LEFT_EDGE2):
+            xVel *= -1
+            newColorSide=random.randint(2,5)
+            ball.color(colorList[newColorSide])
+            if xVel!=0:
+                ball.setx(x + xVel+5)
+       
+        if (y <= BOTTOM_EDGE2+5):
+            yVel *= -1
+            newColorTopBottom=random.randint(0,2)
+            ball.color(colorList[newColorTopBottom])
+            yVel = yVel * DAMPING #damping effect
+            if yVel>2:
+                ball.sety(y + yVel+5)
+            else:
+                yVel=0
+
+        if (y >= TOP_EDGE2):
+            yVel *= -1
+            newColorTopBottom=random.randint(0,2)
+            ball.color(colorList[newColorTopBottom])
+            ball.sety(y + yVel-5)
+
+
+def screen_resize():
+    global RIGHT_EDGE,LEFT_EDGE,BOTTOM_EDGE,TOP_EDGE,RIGHT_EDGE2,LEFT_EDGE2,BOTTOM_EDGE2,TOP_EDGE2,useOGscreen
+    if useOGscreen==True:
+        useOGscreen=False
+    elif useOGscreen==False:
+        useOGscreen=True
     
 
 #Global variables
@@ -85,6 +129,10 @@ ball.position()
 ball.speed(0)
 ball.setheading(40)
 
+#keybinds
+screen.listen()
+turtle.onkey(screen_resize,'Up')
+
 #Define initial position and speed of the ball
 ball.setx(100)
 ball.sety(200)
@@ -93,7 +141,7 @@ yVel = 3
 
 screen.tracer(0) #turn off auto screen updates to make it faster
 
-
 while True:
     moveBall()
     screen.update()
+  
