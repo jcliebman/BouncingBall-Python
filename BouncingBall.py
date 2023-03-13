@@ -1,3 +1,8 @@
+#changelog:
+#Q1:randomize ball color when it hits the right or left wall, use a different set of colors for the floor and ceiling, but still randomize.
+#Q2:change screen size from 400x400 to 175x175 by pressing the Up key (up arrow)
+#Q3:ball increases in speed by 5 every 3 bounces (on any surface.) - note: messing with a combination of this feature and the screen resize feature causes some weird and interesting bugs that i don't quite understand.
+
 #import needed libraries   
 import turtle
 from turtle import *
@@ -19,11 +24,16 @@ DAMPING = .8
 FRICTION = .02
 
 colorList=['chocolate','skyblue','yellow','brown','blue','red']
+
+#know whether or not to use 400x400 (OG) screen or 175x175
 useOGscreen=True
+
+#counts number of times ball hits wall up to 3
+ballCounter=0
 
 #This function will update the location of the ball
 def moveBall():
-    global xVel, yVel
+    global xVel, yVel, ballCounter
 
     #update the postiion of the ball
     x = ball.xcor()
@@ -49,6 +59,7 @@ def moveBall():
             xVel *= -1
             newColorSide=random.randint(2,5)
             ball.color(colorList[newColorSide])
+            ballCounter=ballCounter+1
             if xVel!=0:
                 ball.setx(x + xVel-5)
 
@@ -56,6 +67,7 @@ def moveBall():
             xVel *= -1
             newColorSide=random.randint(2,5)
             ball.color(colorList[newColorSide])
+            ballCounter=ballCounter+1
             if xVel!=0:
                 ball.setx(x + xVel+5)
        
@@ -63,6 +75,7 @@ def moveBall():
             yVel *= -1
             newColorTopBottom=random.randint(0,2)
             ball.color(colorList[newColorTopBottom])
+            ballCounter=ballCounter+1
             yVel = yVel * DAMPING #damping effect
             if yVel>2:
                 ball.sety(y + yVel+5)
@@ -79,6 +92,7 @@ def moveBall():
             xVel *= -1
             newColorSide=random.randint(2,5)
             ball.color(colorList[newColorSide])
+            ballCounter=ballCounter+1
             if xVel!=0:
                 ball.setx(x + xVel-5)
 
@@ -86,6 +100,7 @@ def moveBall():
             xVel *= -1
             newColorSide=random.randint(2,5)
             ball.color(colorList[newColorSide])
+            ballCounter=ballCounter+1
             if xVel!=0:
                 ball.setx(x + xVel+5)
        
@@ -93,6 +108,7 @@ def moveBall():
             yVel *= -1
             newColorTopBottom=random.randint(0,2)
             ball.color(colorList[newColorTopBottom])
+            ballCounter=ballCounter+1
             yVel = yVel * DAMPING #damping effect
             if yVel>2:
                 ball.sety(y + yVel+5)
@@ -103,9 +119,17 @@ def moveBall():
             yVel *= -1
             newColorTopBottom=random.randint(0,2)
             ball.color(colorList[newColorTopBottom])
+            ballCounter=ballCounter+1
             ball.sety(y + yVel-5)
 
+#increases ball speed every three times it hits any of the 4 edges
+def increase_speed():
+    global xVel,ballCounter
+    if ballCounter>=3:
+        xVel=xVel+5
+        ballCounter=0
 
+#resizes screen
 def screen_resize():
     global RIGHT_EDGE,LEFT_EDGE,BOTTOM_EDGE,TOP_EDGE,RIGHT_EDGE2,LEFT_EDGE2,BOTTOM_EDGE2,TOP_EDGE2,useOGscreen
     if useOGscreen==True:
@@ -143,5 +167,6 @@ screen.tracer(0) #turn off auto screen updates to make it faster
 
 while True:
     moveBall()
+    increase_speed()
     screen.update()
-  
+   
