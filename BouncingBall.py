@@ -1,7 +1,8 @@
 #changelog:
 #Q1:randomize ball color when it hits the right or left wall, use a different set of colors for the floor and ceiling, but still randomize.
 #Q2:change screen size from 400x400 to 175x175 by pressing the Up key (up arrow)
-#Q3:ball increases in speed by 5 every 3 bounces (on any surface.) - note: messing with a combination of this feature and the screen resize feature causes some weird and interesting bugs that i don't quite understand.
+#Q3:ball increases in speed by 5 every 3 bounces (on any surface.)
+#Q3 UPDATE: fixed issue where ball would slow down if it was going to the left.
 
 #import needed libraries   
 import turtle
@@ -126,7 +127,10 @@ def moveBall():
 def increase_speed():
     global xVel,ballCounter
     if ballCounter>=3:
-        xVel=xVel+5
+        if xVel>=0:
+            xVel=xVel+5
+        elif xVel<0:
+            xVel=xVel-5
         ballCounter=0
 
 #resizes screen
