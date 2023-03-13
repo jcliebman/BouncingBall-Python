@@ -3,6 +3,7 @@
 #Q2:change screen size from 400x400 to 175x175 by pressing the Up key (up arrow)
 #Q3:ball increases in speed by 5 every 3 bounces (on any surface.)
 #Q3 UPDATE: fixed issue where ball would slow down if it was going to the left.
+#Q4:inverted gravity. (changed gravity value to negative, added damping to roof, removed it from floor, which my have been unnecessary but i did it anyway.)
 
 #import needed libraries   
 import turtle
@@ -20,7 +21,7 @@ LEFT_EDGE2 = -175
 BOTTOM_EDGE2 = -175
 TOP_EDGE2 = 175
 
-GRAVITY = .1
+GRAVITY = -.1 #(negative makes it the top of the screen)
 DAMPING = .8
 FRICTION = .02
 
@@ -77,7 +78,7 @@ def moveBall():
             newColorTopBottom=random.randint(0,2)
             ball.color(colorList[newColorTopBottom])
             ballCounter=ballCounter+1
-            yVel = yVel * DAMPING #damping effect
+            
             if yVel>2:
                 ball.sety(y + yVel+5)
             else:
@@ -87,6 +88,8 @@ def moveBall():
             yVel *= -1
             newColorTopBottom=random.randint(0,2)
             ball.color(colorList[newColorTopBottom])
+            yVel = yVel * DAMPING #damping effect
+            ballCounter=ballCounter+1
             ball.sety(y + yVel-5)
     else:
         if (x >= RIGHT_EDGE2):
@@ -110,7 +113,7 @@ def moveBall():
             newColorTopBottom=random.randint(0,2)
             ball.color(colorList[newColorTopBottom])
             ballCounter=ballCounter+1
-            yVel = yVel * DAMPING #damping effect
+            
             if yVel>2:
                 ball.sety(y + yVel+5)
             else:
@@ -121,6 +124,7 @@ def moveBall():
             newColorTopBottom=random.randint(0,2)
             ball.color(colorList[newColorTopBottom])
             ballCounter=ballCounter+1
+            yVel = yVel * DAMPING #damping effect
             ball.sety(y + yVel-5)
 
 #increases ball speed every three times it hits any of the 4 edges
